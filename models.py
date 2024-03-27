@@ -1,5 +1,7 @@
-from . import db
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+
+db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,4 +30,3 @@ class GardenBuddy(db.Model):
 
     def __repr__(self):
         return f'<GardenBuddy {self.id}>'
-

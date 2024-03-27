@@ -1,13 +1,9 @@
-from ..models import User
-from .. import db
+from ..models import db, User
 
 class UserService:
-    # def __init__(self, db):
-    #     self.db = db
 
   @staticmethod
   def create_user(username, password, firstname, lastname, user_start_date):
-      print("CALLIING CREATE")
       user = User(username=username, password=password, firstname=firstname, lastname=lastname, user_start_date=user_start_date)
       db.session.add(user)
       db.session.commit()
