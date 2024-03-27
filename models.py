@@ -16,6 +16,16 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.firstname} {self.lastname} {self.id}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'user_start_date': self.user_start_date.strftime('%Y-%m-%d')  # Convert to string
+            # Add more fields if needed
+        }
 
 
 class GardenBuddy(db.Model):
