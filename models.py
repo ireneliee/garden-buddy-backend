@@ -132,24 +132,25 @@ class GardenData(db.Model):
     
 class GardenType(db.Model): #suspicious
     id = db.Column(db.Integer, primary_key=True)
-    plant_name = db.Column(db.Integer, nullable=False)
-    plant__description = db.Column(db.Integer, nullable=False) 
+    plant_name = db.Column(db.String(200), nullable=False)
+    plant_description = db.Column(db.String(200), nullable=False) 
     ideal_ph_level= db.Column(db.Integer, nullable=False)
     ideal_temp_level= db.Column(db.Integer, nullable=False)
     ideal_moisture_level= db.Column(db.Integer, nullable=False)
     ideal_soil_salinity= db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f'<GardenType {self.date_timestamp}>'
+        return f'<GardenType {self.plant_name}>'
     
     def serialize(self):
         return {
             'id': self.id,
-            'soil_ph_level': self.soil_ph_level,
-            'air_temperature': self.air_temperature,
-            'soil__salinity': self.soil__salinity,
-            'soil_moisture': self.soil_moisture,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d')
+            'plant_name': self.plant_name,
+            'plant_description': self.plant_description,
+            'ideal_ph_level': self.ideal_ph_level,
+            'ideal_temp_level': self.ideal_temp_level,
+            'ideal_moisture_level': self.ideal_moisture_level,
+            'ideal_soil_salinity': self.ideal_soil_salinity,
         }
     
 class Order(db.Model): 
