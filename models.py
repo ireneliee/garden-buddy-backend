@@ -20,7 +20,7 @@ class Environment(Enum):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=False) 
+    password = db.Column(db.String(200), nullable=False) 
     firstname = db.Column(db.String(20), nullable=False)
     lastname = db.Column(db.String(20), nullable=False)
     user_start_date = db.Column(db.DateTime, nullable=False) 

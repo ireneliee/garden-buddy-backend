@@ -11,6 +11,13 @@ def setup_user_routes(app):
       lastname = request.args.get('lastname')
       user = UserService.create_user(username, password, firstname, lastname)
       return jsonify(user.serialize())
+  
+  @app.route('/users/userLogin', methods=['POST'])
+  def userLogin():
+      username = request.args.get('username')
+      password = request.args.get('password')
+      user = UserService.user_login(username, password)
+      return jsonify(user.serialize())
 
   @app.route('/users/getAllUsers', methods=['GET'])
   def getAllUsers():
