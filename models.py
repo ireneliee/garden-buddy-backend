@@ -51,8 +51,10 @@ class GardenBuddy(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = relationship('User', back_populates='garden_buddies')
 
-    # Define the one-to-many relationship with Garden
-    garden = relationship('Garden', back_populates='garden_buddy')
+    # Define the one-to-one relationship with Garden
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=True)
+    garden = relationship('Garden', uselist=False)
+
     def __repr__(self):
         return f'<GardenBuddy {self.id}>'
     
@@ -66,9 +68,14 @@ class GardenBuddy(db.Model):
 class Garden(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    # One-to-one relationship with GardenBuddy
-    garden_buddy_id = db.Column(db.Integer, db.ForeignKey('garden_buddy.id'), unique=True, nullable=False)
-    garden_buddy = relationship('GardenBuddy', back_populates='garden')
+    #### REMOVED BECAUSE OF CIRCULAR DEPENDENCY
+    # # One-to-one relationship with GardenBuddy
+    # garden_buddy_id = db.Column(db.Integer, db.ForeignKey('garden_buddy.id'), nullable=False)
+    # garden_buddy = relationship('GardenBuddy', back_populates='garden', foreign_keys=[garden_buddy_id])
+
+    # # One-to-one relationship with GardenBuddy
+    # garden_buddy_id = db.Column(db.Integer, db.ForeignKey('garden_buddy.id'), unique=True, nullable=False)
+    # garden_buddy = relationship('GardenBuddy', back_populates='garden')
 
     # Define the relationship with GardenType
     garden_type_id = db.Column(db.Integer, db.ForeignKey('garden_type.id'), nullable=False)
@@ -227,12 +234,20 @@ class InventoryItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False) 
     description = db.Column(db.String(200), nullable=False) 
 
-    type = db.Column(db.String(50))  # Define the 'type' attribute for polymorphic mapping
+    type = db.Column(db.String(50)) 
 
     __mapper_args__ = {
         'polymorphic_identity': 'inventory_item',
         'polymorphic_on': type
     }
+
+    # @declared_attr
+    # def __tablename__(cls):
+    #     return {'polymorphic_on': cls.type}
+
+    @declared_attr
+    def __mapper_args__(cls):
+        return {'polymorphic_identity': cls.__name__.lower(), 'polymorphic_on': cls.type}
 
     def __repr__(self):
         return f'<InventoryItem {self.id}>'
@@ -246,7 +261,8 @@ class InventoryItem(db.Model):
             'description': self.description,
         }
     
-class GardenBuddyPack(InventoryItem): 
+
+class GardenBuddyPack(InventoryItem):
     __tablename__ = 'garden_buddy_pack'
     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
     plant_name = db.Column(db.String(20), nullable=False)
@@ -259,6 +275,13 @@ class GardenBuddyPack(InventoryItem):
 
     __mapper_args__ = {'polymorphic_identity': 'garden_buddy_pack'}
 
+    def __init__(self, name, price, quantity, description, plant_name, garden_buddy_pack_description, environment_enum, garden_type_id):
+        super().__init__(name=name, price=price, quantity=quantity, description=description)
+        self.plant_name = plant_name
+        self.garden_buddy_pack_description = garden_buddy_pack_description
+        self.environment_enum = environment_enum
+        self.garden_type_id = garden_type_id
+
     def __repr__(self):
         return f'<GardenBuddyPack {self.id}>'
     
@@ -270,11 +293,14 @@ class GardenBuddyPack(InventoryItem):
             'environment_enum': self.environment_enum,
         }
 
-class Accessory(InventoryItem): 
+class Accessory(InventoryItem):
     __tablename__ = 'accessory'
     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
 
     __mapper_args__ = {'polymorphic_identity': 'accessory'}
+
+    def __init__(self, name, price, quantity, description):
+        super().__init__(name=name, price=price, quantity=quantity, description=description)
 
     def __repr__(self):
         return f'<Accessory {self.id}>'
@@ -283,3 +309,72 @@ class Accessory(InventoryItem):
         return {
             'id': self.id,
         }
+
+    
+
+
+#OLD
+# class InventoryItem(db.Model): 
+#     __tablename__ = 'inventory_item'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(20), nullable=False)
+#     price = db.Column(db.Integer, nullable=False)
+#     quantity = db.Column(db.Integer, nullable=False) 
+#     description = db.Column(db.String(200), nullable=False) 
+
+#     type = db.Column(db.String(50))  # Define the 'type' attribute for polymorphic mapping
+
+#     __mapper_args__ = {
+#         'polymorphic_identity': 'inventory_item',
+#         'polymorphic_on': type
+#     }
+
+#     def __repr__(self):
+#         return f'<InventoryItem {self.id}>'
+    
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'name': self.name,
+#             'price': self.price,
+#             'quantity': self.quantity,
+#             'description': self.description,
+#         }
+    
+# class GardenBuddyPack(InventoryItem): 
+#     __tablename__ = 'garden_buddy_pack'
+#     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
+#     plant_name = db.Column(db.String(20), nullable=False)
+#     garden_buddy_pack_description = db.Column(db.String(200), nullable=False)
+#     environment_enum = db.Column(db.Enum(Environment), nullable=False)
+
+#     garden_type_id = db.Column(db.Integer, db.ForeignKey('garden_type.id'), nullable=False)  # Foreign key to GardenType
+
+#     garden_type = relationship('GardenType')
+
+#     __mapper_args__ = {'polymorphic_identity': 'garden_buddy_pack'}
+
+#     def __repr__(self):
+#         return f'<GardenBuddyPack {self.id}>'
+    
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'plant_name': self.plant_name,
+#             'garden_buddy_pack_description': self.garden_buddy_pack_description,
+#             'environment_enum': self.environment_enum,
+#         }
+
+# class Accessory(InventoryItem): 
+#     __tablename__ = 'accessory'
+#     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
+
+#     __mapper_args__ = {'polymorphic_identity': 'accessory'}
+
+#     def __repr__(self):
+#         return f'<Accessory {self.id}>'
+    
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#         }
