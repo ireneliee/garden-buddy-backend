@@ -3,7 +3,7 @@ from .models import db, User
 from .services.UserService import UserService
 from .services.GardenService import GardenService
 from .services.ShopService import ShopService
-from .routes import AppRoute, UserRoute, GardenRoute
+from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute
 import connexion
 
 from sqlalchemy import inspect
@@ -161,19 +161,28 @@ def create_sample_items():
         item = ShopService.create_accessory(**accessory_data)
         print(f"Created Accessory: {item}")
 
+def create_sample_orders():
+    print("CALLED CREATE SAMPLE ORDERS")
+
+    list_of_line_items = [(1,2),(5,2)]
+    order = ShopService.create_order(list_of_line_items,1)
+    print(f"Created Order: {order}")
+
 # dataloader and init db
-with flask_app.app_context():
+with flask_app.app_context(): 
     inspector = inspect(db.engine)
     if not inspector.has_table(User.__tablename__):
         db.create_all()
         create_sample_users()
         create_sample_garden_types()
         create_sample_items()
+        create_sample_orders()
 
 # load in routes
 AppRoute.setup_app_routes(flask_app)
 UserRoute.setup_user_routes(flask_app)
 GardenRoute.setup_garden_routes(flask_app)
+ShopRoute.setup_shop_routes(flask_app)
 
 # run app
 if __name__ == '__main__':

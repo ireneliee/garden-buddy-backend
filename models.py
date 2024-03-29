@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from enum import Enum
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.ext.hybrid import hybrid_property
 
 db = SQLAlchemy()
 
@@ -168,7 +169,8 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = relationship('User', back_populates='orders')
-    order_line_items = relationship('OrderLineItem', back_populates='order')
+    # order_line_items = relationship('OrderLineItem', back_populates='order')
+    order_line_items = relationship('OrderLineItem', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Order {self.id}>'
@@ -177,7 +179,8 @@ class Order(db.Model):
         return {
             'id': self.id,
             'total_price': self.total_price,
-            'order_status_enum': self.order_status_enum,
+            'order_status_enum': self.order_status_enum.value,
+            'user_id': self.user_id,
         }
 
 class OrderLineItem(db.Model): 
@@ -185,11 +188,15 @@ class OrderLineItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     sub_total = db.Column(db.Integer, nullable=False) 
 
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-    inventory_item_id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True)
+    # order = relationship('Order')
 
-    order = relationship('Order')
+    # order_id = Column(Integer, ForeignKey('order.id'), nullable=False)
+
+
+    inventory_item_id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), nullable=False)
     inventory_item = relationship('InventoryItem')
+
     def __repr__(self):
         return f'<OrderLineItem {self.id}>'
     
@@ -225,7 +232,79 @@ class OrderLineItem(db.Model):
 #             'quantity': self.quantity,
 #             'description': self.description,
 #         }
+
+# class InventoryItem(db.Model):
+#     __abstract__ = True
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(20), nullable=False)
+#     price = db.Column(db.Integer, nullable=False)
+#     quantity = db.Column(db.Integer, nullable=False) 
+#     description = db.Column(db.String(200), nullable=False)
+#     type = db.Column(db.String(50))
+
+#     @hybrid_property
+#     def subtype(self):
+#         return type(self).__name__
+
+#     def __repr__(self):
+#         return f'<{type(self).__name__} {self.id}>'
     
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'name': self.name,
+#             'price': self.price,
+#             'quantity': self.quantity,
+#             'description': self.description,
+#             'subtype': self.subtype,
+#         }
+
+# class GardenBuddyPack(InventoryItem):
+#     __tablename__ = 'garden_buddy_pack'
+#     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
+#     plant_name = db.Column(db.String(20), nullable=False)
+#     garden_buddy_pack_description = db.Column(db.String(200), nullable=False)
+#     environment_enum = db.Column(db.Enum(Environment), nullable=False)
+#     garden_type_id = db.Column(db.Integer, db.ForeignKey('garden_type.id'), nullable=False)  
+
+#     garden_type = relationship('GardenType')
+
+#     __mapper_args__ = {'polymorphic_identity': 'garden_buddy_pack'}
+
+#     def __repr__(self):
+#         return f'<GardenBuddyPack {self.id}>'
+    
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'name': self.name,
+#             'price': self.price,
+#             'quantity': self.quantity,
+#             'description': self.description,
+#             'plant_name': self.plant_name,
+#             'garden_buddy_pack_description': self.garden_buddy_pack_description,
+#             'environment_enum': self.environment_enum,
+#         }
+
+# class Accessory(InventoryItem):
+#     __tablename__ = 'accessory'
+#     id = db.Column(db.Integer, db.ForeignKey('inventory_item.id'), primary_key=True)
+
+#     __mapper_args__ = {'polymorphic_identity': 'accessory'}
+
+#     def __repr__(self):
+#         return f'<Accessory {self.id}>'
+    
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'name': self.name,
+#             'price': self.price,
+#             'quantity': self.quantity,
+#             'description': self.description,
+        # }
+
 class InventoryItem(db.Model): 
     __tablename__ = 'inventory_item'
     id = db.Column(db.Integer, primary_key=True)
@@ -291,6 +370,10 @@ class GardenBuddyPack(InventoryItem):
             'plant_name': self.plant_name,
             'garden_buddy_pack_description': self.garden_buddy_pack_description,
             'environment_enum': self.environment_enum,
+            'name': self.name,
+            'price': self.price,
+            'quantity': self.quantity,
+            'description': self.description,
         }
 
 class Accessory(InventoryItem):
@@ -308,6 +391,10 @@ class Accessory(InventoryItem):
     def serialize(self):
         return {
             'id': self.id,
+            'name': self.name,
+            'price': self.price,
+            'quantity': self.quantity,
+            'description': self.description,
         }
 
     

@@ -1,6 +1,7 @@
-from ..models import db, GardenBuddyPack, Accessory
-
+from ..models import db, GardenBuddyPack, Accessory, Order, OrderLineItem, OrderStatus, InventoryItem
+from.UserService import UserService
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 
 class ShopService:
     @staticmethod
@@ -100,4 +101,75 @@ class ShopService:
             db.session.delete(item)
             db.session.commit()
             return item.serialize()
+        return None
+
+    @staticmethod
+    def create_order_line_item(inventory_item_id, quantity):
+        
+        buddy_pack = ShopService.get_garden_buddy_pack(inventory_item_id)
+        accessory = ShopService.get_accessory(inventory_item_id)
+
+        item = None
+        if buddy_pack != None:
+            item = buddy_pack
+        elif accessory != None:
+            item = accessory
+        else:
+            raise ValueError("ITEM DOES NOT EXIST")
+        
+        inventory_item = ShopService.get_inventory_item(inventory_item_id)
+
+        if inventory_item.quantity < quantity:
+            raise ValueError("Not enough quantity for Inventory Item!")
+
+
+        sub_total = inventory_item.price * quantity
+        order_line_item = OrderLineItem(quantity=quantity,sub_total=sub_total, inventory_item_id=inventory_item_id)
+        inventory_item.quantity = inventory_item.quantity - quantity
+
+        db.session.add(order_line_item)
+        db.session.commit()
+
+        return order_line_item
+
+    @staticmethod
+    def create_order(list_of_line_items, user_id):
+        try:
+            user = UserService.get_user_by_id(user_id)
+            lst = []
+            total_price = 0
+            for item in list_of_line_items:
+                inventory_id = item[0]
+                quantity = item[1] 
+                order_line_item = ShopService.create_order_line_item(inventory_id,quantity)
+                lst.append(order_line_item)
+                total_price += order_line_item.sub_total
+
+            order = Order(total_price=total_price,order_status_enum=OrderStatus.ORDER_PLACED,user_id=user_id,order_line_items=lst)
+
+            db.session.add(order)
+            db.session.commit()
+            user.orders.append(order)
+
+            for item in lst:
+                item.order_id = order.id
+        
+            return order
+        
+        except IntegrityError as ex:
+            print(ex)
+            db.session.rollback()
+            raise ValueError("Transaction did not go through!")
+        except Exception as ex:
+            print("Error:", ex)
+            return None
+        
+
+
+    
+    @staticmethod
+    def get_inventory_item(item_id):
+        item = InventoryItem.query.get(item_id)
+        if item:
+            return item
         return None
