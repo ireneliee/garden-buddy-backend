@@ -3,7 +3,8 @@ from .models import db, User
 from .services.UserService import UserService
 from .services.GardenService import GardenService
 from .services.ShopService import ShopService
-from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute
+from .services.DataService import DataService
+from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute, DataRoute
 import connexion
 
 from sqlalchemy import inspect
@@ -183,6 +184,7 @@ AppRoute.setup_app_routes(flask_app)
 UserRoute.setup_user_routes(flask_app)
 GardenRoute.setup_garden_routes(flask_app)
 ShopRoute.setup_shop_routes(flask_app)
+DataRoute.setup_data_routes(flask_app)
 
 # run app
 if __name__ == '__main__':
