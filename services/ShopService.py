@@ -164,12 +164,17 @@ class ShopService:
             print("Error:", ex)
             return None
         
-
-
-    
     @staticmethod
     def get_inventory_item(item_id):
         item = InventoryItem.query.get(item_id)
         if item:
             return item
         return None
+    
+    @staticmethod
+    def get_all_accessories():
+        return Accessory.query.all()
+    
+    @staticmethod
+    def get_all_garden_buddy_packs():
+        return GardenBuddyPack.query.all()

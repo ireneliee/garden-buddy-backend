@@ -369,7 +369,7 @@ class GardenBuddyPack(InventoryItem):
             'id': self.id,
             'plant_name': self.plant_name,
             'garden_buddy_pack_description': self.garden_buddy_pack_description,
-            'environment_enum': self.environment_enum,
+            'environment_enum': self.environment_enum.value,
             'name': self.name,
             'price': self.price,
             'quantity': self.quantity,

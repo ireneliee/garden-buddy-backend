@@ -6,6 +6,7 @@ from .services.ShopService import ShopService
 from .services.DataService import DataService
 from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute, DataRoute
 import connexion
+from flask_cors import CORS
 
 from sqlalchemy import inspect
 
@@ -22,6 +23,8 @@ app.add_api('openapi/swagger.yml')
 # Configure Flask app using Connexion's underlying Flask app
 flask_app = app.app
 flask_app.config.from_object(config)
+CORS(flask_app)
+
 
 # Initialize database
 db.init_app(flask_app)
