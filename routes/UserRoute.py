@@ -17,7 +17,7 @@ def setup_user_routes(app):
       username = request.args.get('username')
       password = request.args.get('password')
       user = UserService.user_login(username, password)
-      return jsonify(user.serialize())
+      return jsonify(user)
 
   @app.route('/users/getAllUsers', methods=['GET'])
   def getAllUsers():
