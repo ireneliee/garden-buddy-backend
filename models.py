@@ -465,3 +465,77 @@ class Accessory(InventoryItem):
 #         return {
 #             'id': self.id,
 #         }
+
+# data-related classes
+    
+class GardenTemperatureData(db.Model):
+    __tablename__ = "gardenTemperatureData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    rpi_identifier = db.Column(db.String(16), nullable = False)
+    air_temperature = db.Column(db.Integer, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    def __repr__(self):
+        return f'<GardenTemperatureData: {self.rpi_identifier} -> {self.air_temperature}°C on {self.date_timestamp}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'air_temperature': self.air_temperature,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    
+class GardenMoistureData(db.Model):
+    __tablename__ = "gardenMoistureData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    rpi_identifier = db.Column(db.String(16), nullable = False)
+    moisture = db.Column(db.Integer, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    def __repr__(self):
+        return f'<GardenMoistureData: {self.rpi_identifier} -> {self.moisture}% on {self.date_timestamp}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'moisture': self.moisture,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+class GardenSalinityData(db.Model):
+    __tablename__ = "gardenSalinityData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    rpi_identifier = db.Column(db.String(16), nullable = False)
+    salinity = db.Column(db.Integer, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    def __repr__(self):
+        return f'<GardenSalinityData: {self.rpi_identifier} -> {self.salinity} ppt on {self.date_timestamp}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'salinity': self.salinity,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+class GardenPhData(db.Model):
+    __tablename__ = "gardenPhData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    rpi_identifier = db.Column(db.String(16), nullable = False)
+    ph = db.Column(db.Integer, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    def __repr__(self):
+        return f'<GardenPhData: {self.rpi_identifier} -> {self.ph} pH on {self.date_timestamp}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'ph': self.ph,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    

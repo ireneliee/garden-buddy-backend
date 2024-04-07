@@ -3,7 +3,8 @@ from .models import db, User
 from .services.UserService import UserService
 from .services.GardenService import GardenService
 from .services.ShopService import ShopService
-from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute
+from .services.DataService import DataService
+from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute, DataRoute
 import connexion
 from flask_cors import CORS
 
@@ -15,15 +16,10 @@ config = Config()
 # Initialize connexion app
 app = connexion.App(__name__, specification_dir='./')
 
-# Add the API specification
-app.add_api('openapi/swagger.yml')
-# app.add_api('swagger.yml')
-
 # Configure Flask app using Connexion's underlying Flask app
 flask_app = app.app
 flask_app.config.from_object(config)
 CORS(flask_app)
-
 
 # Initialize database
 db.init_app(flask_app)
@@ -186,7 +182,4 @@ AppRoute.setup_app_routes(flask_app)
 UserRoute.setup_user_routes(flask_app)
 GardenRoute.setup_garden_routes(flask_app)
 ShopRoute.setup_shop_routes(flask_app)
-
-# run app
-if __name__ == '__main__':
-    app.run(port=5000)
+DataRoute.setup_data_routes(flask_app)
