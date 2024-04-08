@@ -146,7 +146,6 @@ class ShopService:
                 total_price += order_line_item.sub_total
 
             order = Order(total_price=total_price,order_status_enum=OrderStatus.ORDER_PLACED,user_id=user_id,order_line_items=lst)
-
             db.session.add(order)
             db.session.commit()
             user.orders.append(order)
@@ -157,11 +156,9 @@ class ShopService:
             return order
         
         except IntegrityError as ex:
-            print(ex)
             db.session.rollback()
             raise ValueError("Transaction did not go through!")
         except Exception as ex:
-            print("Error:", ex)
             return None
         
     @staticmethod
