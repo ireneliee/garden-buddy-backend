@@ -30,6 +30,12 @@ def setup_user_routes(app):
       user = UserService.get_user_by_id(userId)
       return jsonify(user.serialize())
   
+  @app.route('/users/getOrdersByUserId', methods=['GET'])
+  def getOrdersByUserId():
+      userId = request.args.get('userId')
+      orders = UserService.get_orders_by_userId(userId)
+      return jsonify([order.serialize() for order in orders])
+  
 #DO NOT USE UPDATE OR DELETE
   @app.route('/users/updateUser', methods=['PUT'])
   def updateUser():

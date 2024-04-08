@@ -1,4 +1,4 @@
-from ..models import db, User
+from ..models import db, User, Order
 from datetime import datetime
 import bcrypt
 from sqlalchemy.exc import IntegrityError
@@ -43,6 +43,10 @@ class UserService:
     @staticmethod
     def get_user_by_username(username):
         return User.query.filter_by(username=username).first()
+    
+    @staticmethod
+    def get_orders_by_userId(user_id):
+        return Order.query.filter_by(user_id=user_id)
 
     @staticmethod
     def update_user(user_id, username=None, password=None, firstname=None, lastname=None):
