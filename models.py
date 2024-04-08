@@ -205,6 +205,7 @@ class OrderLineItem(db.Model):
             'id': self.id,
             'quantity': self.quantity,
             'sub_total': self.sub_total,
+            'inventory_item_id': self.inventory_item_id
         }
     
 

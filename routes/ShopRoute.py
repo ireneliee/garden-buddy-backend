@@ -25,3 +25,9 @@ def setup_shop_routes(app):
   def getAllGardenBuddyPacks():
       packs = ShopService.get_all_garden_buddy_packs()
       return jsonify([pack.serialize() for pack in packs])
+  
+  @app.route('/shop/getInventoryItem', methods=['GET'])
+  def getInventoryItem():
+      item_id = request.args.get('item_id')
+      item = ShopService.get_inventory_item(item_id)
+      return jsonify(item.serialize())
