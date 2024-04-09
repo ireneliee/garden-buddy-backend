@@ -1,4 +1,4 @@
-from ..models import db, GardenType,GardenBuddy, Garden
+from ..models import db, GardenType,GardenBuddy, Garden, User
 from datetime import datetime
 import bcrypt
 from sqlalchemy.exc import IntegrityError
@@ -30,11 +30,11 @@ class GardenService:
       return  garden_type
     
     @staticmethod  
-    def create_garden_buddy(user_id):
+    def create_garden_buddy(user_id, serial_id):
         user = UserService.get_user_by_id(user_id)
         if user:
             date_registered = datetime.now()
-            garden_buddy = GardenBuddy(date_registered=date_registered, user_id=user_id, user=user)
+            garden_buddy = GardenBuddy(date_registered=date_registered,serial_id=str(serial_id), user_id=user_id, user=user)
             db.session.add(garden_buddy)
             db.session.commit()
             return garden_buddy
@@ -52,3 +52,21 @@ class GardenService:
         db.session.commit()       
 
         return garden
+    
+    @staticmethod
+    def get_garden_buddies_by_user_id(user_id):
+      user = UserService.get_user_by_id(user_id)
+      print(user)
+      garden_buddies = user.garden_buddies
+
+      print(user.garden_buddies)
+      return garden_buddies
+    
+    @staticmethod
+    def get_garden_by_garden_buddy_id(garden_buddy_id):
+      garden_buddy = GardenBuddy.query.get(garden_buddy_id)
+      return garden_buddy.garden
+
+    @staticmethod
+    def get_all_garden_types():
+      return GardenType.query.all()

@@ -47,6 +47,7 @@ class User(db.Model):
 class GardenBuddy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_registered = db.Column(db.DateTime, nullable=False)
+    serial_id = db.Column(db.String(8), nullable=False)
 
     # Define user_id as a foreign key for the relationship with User
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -63,6 +64,7 @@ class GardenBuddy(db.Model):
         return {
             'id': self.id,
             'date_registered': self.date_registered,
+            'serial_id': self.serial_id,
         }
 
 
