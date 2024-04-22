@@ -7,6 +7,8 @@ from .services.DataService import DataService
 from .routes import AppRoute, UserRoute, GardenRoute, ShopRoute, DataRoute
 import connexion
 from flask_cors import CORS
+from datetime import datetime
+from flask import current_app
 
 from sqlalchemy import inspect
 
@@ -58,6 +60,32 @@ def create_sample_garden_types():
     for gardenType in types:
         gType = GardenService.create_garden_type(**gardenType)
         print(f"Created GardenType: {gType}")
+
+def create_garden_buddy():
+    print("Creating garden buddy")
+    garden_buddies = [
+        {
+            'user_id': 1,
+            "serial_id": current_app.config['PERSONAL_RPI_SERIAL_ID']
+        }
+    ]
+
+    for garden_buddy in garden_buddies:
+        garden_buddy = GardenService.create_garden_buddy(**garden_buddy)
+        print(f"Created Garden Buddy: {garden_buddy}")
+
+def create_garden():
+    print("Creating garden")
+    gardens = [
+        {
+            "garden_buddy_id": 1,
+            "garden_type_id": 1
+        }
+    ]
+
+    for garden in gardens:
+        garden = GardenService.create_garden(**garden)
+        print(f"Created Garden: {garden}")
 
 def create_sample_items():
     print("Creating sample items")
@@ -176,6 +204,8 @@ with flask_app.app_context():
         create_sample_garden_types()
         create_sample_items()
         create_sample_orders()
+        create_garden_buddy()
+        create_garden()
 
 # load in routes
 AppRoute.setup_app_routes(flask_app)
