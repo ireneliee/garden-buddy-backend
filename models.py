@@ -88,6 +88,15 @@ class Garden(db.Model):
     garden_images = relationship('GardenImage', back_populates='garden')
     garden_data = relationship('GardenData')
 
+    # Define relationship with collected data
+    temperature_data = relationship('TemperatureData')
+    brightness_data = relationship('BrightnessData')
+    salinity_data = relationship('SalinityData')
+    height_data = relationship('HeightData')
+    ph_data = relationship('PhData')
+    moisture_data = relationship('MoistureData')
+
+
 
     def __repr__(self):
         return f'<Garden {self.id}>'
@@ -471,74 +480,122 @@ class Accessory(InventoryItem):
 
 # data-related classes
     
-class GardenTemperatureData(db.Model):
-    __tablename__ = "gardenTemperatureData"
+class TemperatureData(db.Model):
+    __tablename__ = "temperatureData"
 
     id = db.Column(db.Integer, primary_key=True)
-    rpi_identifier = db.Column(db.String(16), nullable = False)
-    air_temperature = db.Column(db.Integer, nullable=False) 
+    air_temperature = db.Column(db.Float, nullable=False) 
     date_timestamp = db.Column(db.DateTime, nullable=False) 
 
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
     def __repr__(self):
-        return f'<GardenTemperatureData: {self.rpi_identifier} -> {self.air_temperature}°C on {self.date_timestamp}>'
+        return f'<TemperatureData: {self.air_temperature}°C on {self.date_timestamp}>'
     
     def serialize(self):
         return {
             'id': self.id,
-            'air_temperature': self.air_temperature,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'temperature': self.air_temperature,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
         }
     
-class GardenMoistureData(db.Model):
-    __tablename__ = "gardenMoistureData"
+class MoistureData(db.Model):
+    __tablename__ = "moistureData"
 
     id = db.Column(db.Integer, primary_key=True)
-    rpi_identifier = db.Column(db.String(16), nullable = False)
-    moisture = db.Column(db.Integer, nullable=False) 
+    moisture = db.Column(db.Float, nullable=False) 
     date_timestamp = db.Column(db.DateTime, nullable=False) 
 
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
     def __repr__(self):
-        return f'<GardenMoistureData: {self.rpi_identifier} -> {self.moisture}% on {self.date_timestamp}>'
+        return f'<GardenMoistureData: {self.moisture}% on {self.date_timestamp}>'
     
     def serialize(self):
         return {
             'id': self.id,
             'moisture': self.moisture,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
         }
-class GardenSalinityData(db.Model):
-    __tablename__ = "gardenSalinityData"
+class SalinityData(db.Model):
+    __tablename__ = "salinityData"
 
     id = db.Column(db.Integer, primary_key=True)
-    rpi_identifier = db.Column(db.String(16), nullable = False)
-    salinity = db.Column(db.Integer, nullable=False) 
+    salinity = db.Column(db.Float, nullable=False) 
     date_timestamp = db.Column(db.DateTime, nullable=False) 
 
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
     def __repr__(self):
-        return f'<GardenSalinityData: {self.rpi_identifier} -> {self.salinity} ppt on {self.date_timestamp}>'
+        return f'<SalinityData: {self.salinity} ppt on {self.date_timestamp}>'
     
     def serialize(self):
         return {
             'id': self.id,
             'salinity': self.salinity,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
         }
 
-class GardenPhData(db.Model):
-    __tablename__ = "gardenPhData"
+class PhData(db.Model):
+    __tablename__ = "phData"
 
     id = db.Column(db.Integer, primary_key=True)
-    rpi_identifier = db.Column(db.String(16), nullable = False)
-    ph = db.Column(db.Integer, nullable=False) 
+    ph = db.Column(db.Float, nullable=False) 
     date_timestamp = db.Column(db.DateTime, nullable=False) 
 
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
     def __repr__(self):
-        return f'<GardenPhData: {self.rpi_identifier} -> {self.ph} pH on {self.date_timestamp}>'
+        return f'<PhData: {self.ph} pH on {self.date_timestamp}>'
     
     def serialize(self):
         return {
             'id': self.id,
             'ph': self.ph,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
         }
+
+class HeightData(db.Model):
+    __tablename__ = "heightData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    height = db.Column(db.Float, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<HeightData: {self.height} pH on {self.date_timestamp}>'
     
+    def serialize(self):
+        return {
+            'id': self.id,
+            'height': self.height,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
+        }
+ 
+class BrightnessData(db.Model):
+    __tablename__ = "brightnessData"
+
+    id = db.Column(db.Integer, primary_key=True)
+    brightness = db.Column(db.Float, nullable=False) 
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
+
+    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<BrightnessData: {self.brightness} pH on {self.date_timestamp}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'brightness': self.brightness,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
+        }
+       
