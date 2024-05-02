@@ -20,7 +20,7 @@ import skimage.io as skio
 from sklearn.metrics import precision_score, recall_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_auc_score
-from sklearn.externals import joblib
+import joblib
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -45,18 +45,21 @@ class HealthPredictionModel:
     
     def __init__(self):
         self.model = self.train()
-        self.image_directory = "cv_data/images/"
-        self.output_directory = "cv_data/highlighted_patterns/"
+        self.image_directory = "services/cv_data/images/"
+        self.output_directory = "services/cv_data/highlighted_patterns/"
     
     @staticmethod
     def load_image(image_id):
-        file_path = os.path.join("cv_data/images/", image_id + ".jpg")
+        file_path = os.path.join("services/cv_data/images/", image_id + ".jpg")
         image = cv2.imread(file_path)
+        image = cv2.resize(image, (256, 256))
         return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
     @staticmethod
     def train():
-        train_data = pd.read_csv('cv_data/train.csv')
+        train_data = pd.read_csv('services/cv_data/train.csv')
+        train_data = train_data.head(HealthPredictionModel.SAMPLE_LEN)
+
         train_images = []
         for image_id in tqdm(train_data["image_id"][:HealthPredictionModel.SAMPLE_LEN]):
             train_images.append(HealthPredictionModel.load_image(image_id))
@@ -77,9 +80,10 @@ class HealthPredictionModel:
                       metrics=['accuracy'])
         
         train_labels = train_data[['healthy', 'multiple_diseases', 'rust', 'scab']].values
+        print(train_labels)
         model.fit(np.array(train_images), train_labels, epochs=HealthPredictionModel.EPOCHS)
         
-        joblib.dump(model, 'health_prediction_model.joblib')
+        joblib.dump(model, 'services/health_prediction_model.joblib')
         return model
 
 # EPOCHS = 20

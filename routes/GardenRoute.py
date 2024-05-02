@@ -1,4 +1,6 @@
 from ..services.GardenService import GardenService
+from ..services.HeightPredictionModel import HeightPredictionModel
+from ..services.HealthPredictionModel import HealthPredictionModel
 from flask import jsonify, request
 
 
@@ -51,3 +53,18 @@ def setup_garden_routes(app):
   def getAllGardenTypes():
       garden_types = GardenService.get_all_garden_types()
       return jsonify([garden_type.serialize() for garden_type in garden_types])
+  
+  @app.route('/garden/height_prediction_model_train_svm', methods=['GET'])
+  def trainSVM():
+      HeightPredictionModel.train_svm()
+      return {}
+  
+  @app.route('/garden/height_prediction_model_train_logistic_regression', methods=['GET'])
+  def trainLogisticRegression():
+      HeightPredictionModel.train_logistic_regression()
+      return {}
+  
+  @app.route('/garden/health_prediction_model_train', methods=['GET'])
+  def train():
+      HealthPredictionModel.train()
+      return {}

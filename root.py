@@ -86,6 +86,19 @@ def create_garden():
     for garden in gardens:
         garden = GardenService.create_garden(**garden)
         print(f"Created Garden: {garden}")
+        
+def create_garden():
+    print("Creating garden")
+    gardens = [
+        {
+            "garden_buddy_id": 1,
+            "garden_type_id": 1
+        }
+    ]
+
+    for garden in gardens:
+        garden = GardenService.create_garden(**garden)
+        print(f"Created Garden: {garden}")
 
 def create_sample_items():
     print("Creating sample items")
