@@ -1,5 +1,7 @@
-from ..models import db, GardenBuddy, TemperatureData, BrightnessData, MoistureData, HeightData, SalinityData, PhData
+from ..models import db, GardenBuddy, TemperatureData, BrightnessData, MoistureData, HeightData, SalinityData, PhData, GardenImage
 from datetime import datetime
+import os
+from flask import url_for
 class DataService:
     
     @staticmethod
@@ -106,6 +108,28 @@ class DataService:
         
         except Exception as ex:
             print("An error occurred while storing ph data:", ex)
+            return None
+    
+    @staticmethod
+    def storePictureData(serial_id, file):
+        try:
+            date_timestamp = datetime.now().replace(microsecond=0)
+            garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
+            if garden_buddy:
+                file_name = f"{serial_id}.jpg"
+                file_path = os.path.join("services/uploaded_pictures/", file_name)
+                file.save(file_path)
+
+                image_link = url_for('static', filename=f'uploaded_pictures/{file_name}', _external=True)
+                
+                garden_data = GardenImage(garden_id=garden_buddy.garden.id, image_link=image_link, date_timestamp=date_timestamp)
+                db.session.add(garden_data)
+                db.session.commit()
+                return garden_data
+            else:
+                raise ValueError("Unable to find garden_buddy associated with the serial_id")
+        except Exception as ex:
+            print("An error occurred while storing picture data:", ex)
             return None
 
     
