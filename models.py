@@ -86,15 +86,15 @@ class Garden(db.Model):
 
     # Define relationships with other models
     garden_images = relationship('GardenImage', back_populates='garden')
-    garden_data = relationship('GardenData')
+    # garden_data = relationship('GardenData')
 
     # Define relationship with collected data
-    temperature_data = relationship('TemperatureData')
-    brightness_data = relationship('BrightnessData')
-    salinity_data = relationship('SalinityData')
-    height_data = relationship('HeightData')
-    ph_data = relationship('PhData')
-    moisture_data = relationship('MoistureData')
+    temperature_data = relationship('TemperatureData', uselist=False)
+    brightness_data = relationship('BrightnessData', uselist=False)
+    salinity_data = relationship('SalinityData', uselist=False)
+    height_data = relationship('HeightData', uselist=False)
+    ph_data = relationship('PhData', uselist=False)
+    moisture_data = relationship('MoistureData', uselist=False)
 
 
 
@@ -124,30 +124,30 @@ class GardenImage(db.Model):
             'id': self.id,
         }
     
-class GardenData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    soil_ph_level = db.Column(db.Integer, nullable=False)
-    air_temperature = db.Column(db.Integer, nullable=False) 
-    soil__salinity = db.Column(db.Integer, nullable=False)
-    soil_moisture= db.Column(db.Integer, nullable=False)
-    date_timestamp = db.Column(db.DateTime, nullable=False) 
+# class GardenData(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     soil_ph_level = db.Column(db.Integer, nullable=False)
+#     air_temperature = db.Column(db.Integer, nullable=False) 
+#     soil__salinity = db.Column(db.Integer, nullable=False)
+#     soil_moisture= db.Column(db.Integer, nullable=False)
+#     date_timestamp = db.Column(db.DateTime, nullable=False) 
 
-    # Add foreign key to reference Garden
-    garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
-    garden = relationship('Garden', back_populates='garden_data')
+#     # Add foreign key to reference Garden
+#     garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
+#     garden = relationship('Garden', back_populates='garden_data')
 
-    def __repr__(self):
-        return f'<GardenData {self.date_timestamp}>'
+#     def __repr__(self):
+#         return f'<GardenData {self.date_timestamp}>'
     
-    def serialize(self):
-        return {
-            'id': self.id,
-            'soil_ph_level': self.soil_ph_level,
-            'air_temperature': self.air_temperature,
-            'soil__salinity': self.soil__salinity,
-            'soil_moisture': self.soil_moisture,
-            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d')
-        }
+#     def serialize(self):
+#         return {
+#             'id': self.id,
+#             'soil_ph_level': self.soil_ph_level,
+#             'air_temperature': self.air_temperature,
+#             'soil__salinity': self.soil__salinity,
+#             'soil_moisture': self.soil_moisture,
+#             'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d')
+#         }
     
 class GardenType(db.Model): #suspicious
     id = db.Column(db.Integer, primary_key=True)

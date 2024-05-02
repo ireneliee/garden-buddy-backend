@@ -67,7 +67,15 @@ def create_garden_buddy():
         {
             'user_id': 1,
             "serial_id": current_app.config['PERSONAL_RPI_SERIAL_ID']
-        }
+        },
+        {
+            'user_id': 2,
+            "serial_id": '88888888'
+        },
+        {
+            'user_id': 2,
+            "serial_id": '99999999'
+        },
     ]
 
     for garden_buddy in garden_buddies:
@@ -80,18 +88,13 @@ def create_garden():
         {
             "garden_buddy_id": 1,
             "garden_type_id": 1
-        }
-    ]
-
-    for garden in gardens:
-        garden = GardenService.create_garden(**garden)
-        print(f"Created Garden: {garden}")
-        
-def create_garden():
-    print("Creating garden")
-    gardens = [
+        },
         {
-            "garden_buddy_id": 1,
+            "garden_buddy_id": 2,
+            "garden_type_id": 1
+        },
+        {
+            "garden_buddy_id": 3,
             "garden_type_id": 1
         }
     ]
@@ -99,6 +102,23 @@ def create_garden():
     for garden in gardens:
         garden = GardenService.create_garden(**garden)
         print(f"Created Garden: {garden}")
+    
+    DataService.storePhData(12345678,7)
+    DataService.storeTemperatureData(12345678,20)
+    DataService.storeSalinityData(12345678,10)
+    DataService.storeMoistureData(12345678,500)
+    DataService.storeHeightData(12345678,50)
+    DataService.storePhData(88888888,6)
+    DataService.storeTemperatureData(88888888,10)
+    DataService.storeSalinityData(88888888,5)
+    DataService.storeMoistureData(88888888,500)
+    DataService.storeHeightData(88888888,20)
+    DataService.storePhData(99999999,8)
+    DataService.storeTemperatureData(99999999,15)
+    DataService.storeSalinityData(99999999,5.5)
+    DataService.storeMoistureData(99999999,400)
+    DataService.storeHeightData(99999999,30)
+
 
 def create_sample_items():
     print("Creating sample items")
