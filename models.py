@@ -153,10 +153,11 @@ class GardenType(db.Model): #suspicious
     id = db.Column(db.Integer, primary_key=True)
     plant_name = db.Column(db.String(200), nullable=False)
     plant_description = db.Column(db.String(200), nullable=False) 
-    ideal_ph_level= db.Column(db.Integer, nullable=False)
-    ideal_temp_level= db.Column(db.Integer, nullable=False)
-    ideal_moisture_level= db.Column(db.Integer, nullable=False)
-    ideal_soil_salinity= db.Column(db.Integer, nullable=False)
+    ideal_ph_level= db.Column(db.Float, nullable=False)
+    ideal_temp_level= db.Column(db.Float, nullable=False)
+    ideal_moisture_level= db.Column(db.Float, nullable=False)
+    ideal_soil_salinity= db.Column(db.Float, nullable=False)
+    ideal_light= db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return f'<GardenType {self.plant_name}>'
@@ -170,6 +171,7 @@ class GardenType(db.Model): #suspicious
             'ideal_temp_level': self.ideal_temp_level,
             'ideal_moisture_level': self.ideal_moisture_level,
             'ideal_soil_salinity': self.ideal_soil_salinity,
+            'ideal_light': self.ideal_light
         }
     
 class Order(db.Model): 
@@ -598,4 +600,3 @@ class BrightnessData(db.Model):
             'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             'garden_id': self.garden_id
         }
-       

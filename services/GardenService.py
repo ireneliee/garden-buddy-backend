@@ -23,8 +23,8 @@ class GardenService:
       return garden_buddy
     
     @staticmethod
-    def create_garden_type(plant_name, plant_description, ideal_ph_level, ideal_temp_level, ideal_moisture_level, ideal_soil_salinity):
-      garden_type = GardenType(plant_name=plant_name, plant_description=plant_description, ideal_ph_level=ideal_ph_level, ideal_temp_level=ideal_temp_level, ideal_moisture_level=ideal_moisture_level, ideal_soil_salinity=ideal_soil_salinity)
+    def create_garden_type(plant_name, plant_description, ideal_ph_level, ideal_temp_level, ideal_moisture_level, ideal_soil_salinity, ideal_light):
+      garden_type = GardenType(plant_name=plant_name, plant_description=plant_description, ideal_ph_level=ideal_ph_level, ideal_temp_level=ideal_temp_level, ideal_moisture_level=ideal_moisture_level, ideal_soil_salinity=ideal_soil_salinity, ideal_light = ideal_light)
       db.session.add(garden_type)
       db.session.commit()        
       return  garden_type
