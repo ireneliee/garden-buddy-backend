@@ -5,6 +5,7 @@ from ..services.HealthPredictionModel import HealthPredictionModel
 from ..services.HealthPredictionService import HealthPredictionService
 from flask import jsonify, request
 import numpy as np
+import os
 
 
 def setup_garden_routes(app):
@@ -95,3 +96,18 @@ def setup_garden_routes(app):
   def train():
       HealthPredictionModel.train()
       return {}
+  
+  @app.route('/garden/detect_harmful_patterns', methods=['GET'])
+  def detect_harmful_patterns():
+      serial_id = request.args.get('serial_id')
+      image_path = f"services/uploaded_pictures/{serial_id}.jpg"
+      output_directory = HealthPredictionService.detect_harmful_patterns(image_path)
+      return jsonify({"output_directory": output_directory})
+  
+  @app.route('/garden/get_predicted_label', methods=['GET'])
+  def get_predicted_label():
+      serial_id = request.args.get('serial_id')
+      image_path = f"services/uploaded_pictures/{serial_id}.jpg"
+      predicted_label = HealthPredictionService.get_predicted_label(image_path)
+      return jsonify({"predicted_label": predicted_label})
+    
