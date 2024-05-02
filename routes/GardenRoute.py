@@ -1,5 +1,11 @@
 from ..services.GardenService import GardenService
+from ..services.HeightPredictionModel import HeightPredictionModel
+from ..services.HeightPredictionService import HeightPredictionService
+from ..services.HealthPredictionModel import HealthPredictionModel
+from ..services.HealthPredictionService import HealthPredictionService
 from flask import jsonify, request
+import numpy as np
+import os
 
 
 def setup_garden_routes(app):
@@ -51,4 +57,57 @@ def setup_garden_routes(app):
   def getAllGardenTypes():
       garden_types = GardenService.get_all_garden_types()
       return jsonify([garden_type.serialize() for garden_type in garden_types])
-
+  
+  @app.route('/garden/height_prediction_model_train_logistic_regression', methods=['GET'])
+  def trainLogisticRegression():
+      HeightPredictionModel.train_logistic_regression()
+      return {}
+  
+  @app.route('/garden/get_predicted_height_by_garden_id_logistic', methods=['GET'])
+  def getPredictedHeightByGardenIdLogistic():
+      garden_id = request.args.get('id')
+      height = HeightPredictionService.get_predicted_height_by_id_logistic(garden_id)
+      height_list = height.tolist() if isinstance(height, np.ndarray) else height
+      return jsonify(height_list)
+  
+  @app.route('/garden/adjust_ideal_for_all_garden_type_logistic', methods=['GET'])
+  def adjustIdealForAllGardenTypeLogistic():
+      ideal_features = HeightPredictionService.adjust_ideal_for_all_garden_type_logistic()
+      return jsonify(ideal_features)
+  
+  @app.route('/garden/height_prediction_model_train_svm', methods=['GET'])
+  def trainSVM():
+      HeightPredictionModel.train_svm()
+      return {}
+  
+  @app.route('/garden/get_predicted_height_by_garden_id_svm', methods=['GET'])
+  def getPredictedHeightByGardenIdSvm():
+      garden_id = request.args.get('id')
+      height = HeightPredictionService.get_predicted_height_by_id_svm(garden_id)
+      height_list = height.tolist() if isinstance(height, np.ndarray) else height
+      return jsonify(height_list)
+  
+  @app.route('/garden/adjust_ideal_for_all_garden_type_svm', methods=['GET'])
+  def adjustIdealForAllGardenTypeSvm():
+      ideal_features = HeightPredictionService.adjust_ideal_for_all_garden_type_svm()
+      return jsonify(ideal_features)
+  
+  @app.route('/garden/health_prediction_model_train', methods=['GET'])
+  def train():
+      HealthPredictionModel.train()
+      return {}
+  
+  @app.route('/garden/detect_harmful_patterns', methods=['GET'])
+  def detect_harmful_patterns():
+      serial_id = request.args.get('serial_id')
+      image_path = f"services/uploaded_pictures/{serial_id}.jpg"
+      output_directory = HealthPredictionService.detect_harmful_patterns(image_path)
+      return jsonify({"output_directory": output_directory})
+  
+  @app.route('/garden/get_predicted_label', methods=['GET'])
+  def get_predicted_label():
+      serial_id = request.args.get('serial_id')
+      image_path = f"services/uploaded_pictures/{serial_id}.jpg"
+      predicted_label = HealthPredictionService.get_predicted_label(image_path)
+      return jsonify({"predicted_label": predicted_label})
+    

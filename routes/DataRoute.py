@@ -46,22 +46,14 @@ def setup_data_routes(app):
       garden_data = DataService.storeHeightData(serial_id = identifier, height = value)
       return jsonify(garden_data.serialize())
   
-  @app.route('/data/getLatestPlantRecord', methods=['GET'])
-  def getLatestPlantRecord():
-      gardenId = request.args.get('gardenId')
-      data_pack = DataService.retrieveLatestData(gardenId = gardenId)
-
-      return jsonify(data_pack)
-
-  @app.route('/data/getAbnormalPlantData', methods=['GET'])
-  def getAbnormalPlantData():
-      gardenId = request.args.get('gardenId')
-      data_pack = DataService.retrieveAbnormalCondition(gardenId = gardenId)
-
-      return jsonify(data_pack)
+  @app.route('/data/submitPictureData', methods=['POST'])
+  def submitPictureData():
+    identifier = request.form.get('identifier')
+    file = request.files.get('file')
+    garden_data = DataService.storePictureData(serial_id=identifier, file=file)
+    return jsonify(garden_data.serialize())
   
-  @app.route('/data/getGardenTypeBySerialId', methods=['GET'])
-  def getGardenTypeBySerialId():
-      serial_id = request.args.get('serialId')
-      garden_type = DataService.get_garden_type_by_serial(serial_id)
-      return jsonify(garden_type.serialize())
+  @app.route('/data/testing', methods=['GET'])
+  def testing():
+      print('Called')
+      return "testing"
