@@ -108,8 +108,8 @@ class Garden(db.Model):
     
 class GardenImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    garden_image_link = db.Column(db.String(20), nullable=False)
-    timestamp = db.Column(db.DateTime, nullable=False) 
+    image_link = db.Column(db.String(100), nullable=False)
+    date_timestamp = db.Column(db.DateTime, nullable=False) 
 
     # One-to-many relationship with GardenBuddy
     garden_id = db.Column(db.Integer, db.ForeignKey('garden.id'), nullable=False)
@@ -122,6 +122,9 @@ class GardenImage(db.Model):
     def serialize(self):
         return {
             'id': self.id,
+            'image_link': self.image_link,
+            'date_timestamp': self.date_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'garden_id': self.garden_id
         }
     
 # class GardenData(db.Model):
