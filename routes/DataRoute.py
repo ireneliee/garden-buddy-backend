@@ -59,3 +59,9 @@ def setup_data_routes(app):
       data_pack = DataService.retrieveAbnormalCondition(gardenId = gardenId)
 
       return jsonify(data_pack)
+  
+  @app.route('/data/getGardenTypeBySerialId', methods=['GET'])
+  def getGardenTypeBySerialId():
+      serial_id = request.args.get('serialId')
+      garden_type = DataService.get_garden_type_by_serial(serial_id)
+      return jsonify(garden_type.serialize())

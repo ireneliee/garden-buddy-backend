@@ -51,3 +51,4 @@ def setup_garden_routes(app):
   def getAllGardenTypes():
       garden_types = GardenService.get_all_garden_types()
       return jsonify([garden_type.serialize() for garden_type in garden_types])
+

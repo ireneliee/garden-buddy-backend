@@ -14,7 +14,6 @@ class GardenService:
       if not garden_type:
         raise ValueError("garden_type not found")
       return garden_type
-    
     @staticmethod
     def get_garden_buddy_by_id(id):
       garden_buddy = GardenBuddy.query.get(id)

@@ -22,6 +22,20 @@ class DataService:
             return None
     
     @staticmethod
+    def get_garden_type_by_serial(serialNumber):
+       
+       garden_buddy = GardenBuddy.query.filter_by(serial_id = serialNumber).first() 
+       if not garden_buddy:
+          raise ValueError("Garden buddy not found")
+       
+       garden_type = GardenType.query.get(garden_buddy.garden.garden_type_id)
+
+       if not garden_type:
+          raise ValueError("Garden type doesn't exist")
+       
+       return garden_type
+    
+    @staticmethod
     def storeMoistureData(serial_id, moisture):
         try:
             date_timestamp = datetime.now().replace(microsecond=0)
