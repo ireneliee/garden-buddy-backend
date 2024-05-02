@@ -25,17 +25,18 @@ class DataService:
     
     @staticmethod
     def get_garden_type_by_serial(serialNumber):
-       
-       garden_buddy = GardenBuddy.query.filter_by(serial_id = serialNumber).first() 
+       garden_buddy = GardenBuddy.query.filter_by(serial_id = serialNumber).first()
+
        if not garden_buddy:
           raise ValueError("Garden buddy not found")
        
-       garden_type = GardenType.query.get(garden_buddy.garden.garden_type_id)
+       garden = Garden.query.get(garden_buddy.garden_id)
 
-       if not garden_type:
-          raise ValueError("Garden type doesn't exist")
+       gardenType = GardenType.query.get(garden.garden_type_id)
        
-       return garden_type
+       gardenType = gardenType.serialize()
+       return gardenType
+    
     
     @staticmethod
     def storeMoistureData(serial_id, moisture):
