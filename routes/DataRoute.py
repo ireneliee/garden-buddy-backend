@@ -61,6 +61,12 @@ def setup_data_routes(app):
         garden_data = DataService.storePictureData(serial_id=identifier, file=file)
         return jsonify(garden_data.serialize())
 
+    @app.route("/data/getGardenTypeBySerialId", methods=["GET"])
+    def getGardenTypeBySerialId():
+        serial_id = request.args.get("serialId")
+        ideal_features = DataService.get_garden_type_by_serial(serial_id)
+        return jsonify(ideal_features)
+
     @app.route("/data/testing", methods=["GET"])
     def testing():
         print("Called")
