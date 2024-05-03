@@ -107,5 +107,18 @@ class DataService:
         except Exception as ex:
             print("An error occurred while storing ph data:", ex)
             return None
+    
+    #AMELIA HERE
+    @staticmethod
+    def get_phdata_by_garden_id(garden_id):
+        try:
+            ph_data = PhData.query.filter_by(garden_id=garden_id)\
+                               .order_by(PhData.date_timestamp.desc()).first()
+            if ph_data:
+                return ph_data.ph
+            else:
+                return 'No pH data found for this garden type.'
+        except Exception as e:
+            return f"An error occurred: {e}"
 
     

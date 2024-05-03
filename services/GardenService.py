@@ -70,3 +70,4 @@ class GardenService:
     @staticmethod
     def get_all_garden_types():
       return GardenType.query.all()
+    

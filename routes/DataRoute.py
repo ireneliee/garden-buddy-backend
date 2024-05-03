@@ -50,3 +50,12 @@ def setup_data_routes(app):
   def testing():
       print('Called')
       return "testing"
+  
+  @app.route('/data/getPhByGardenId', methods=['GET'])
+  def getPhByGardenId():
+      garden_id = request.args.get('garden_id')
+      ph = DataService.get_phdata_by_garden_id(garden_id)
+      return jsonify(ph)
+  
+  
+  

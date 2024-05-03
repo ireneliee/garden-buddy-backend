@@ -104,7 +104,7 @@ def create_garden():
         print(f"Created Garden: {garden}")
     
     DataService.storePhData(12345678,7)
-    DataService.storeTemperatureData(12345678,20)
+    DataService.storeTemperatureData(12345678,36)
     DataService.storeSalinityData(12345678,10)
     DataService.storeMoistureData(12345678,500)
     DataService.storeHeightData(12345678,50)
@@ -149,6 +149,24 @@ def create_sample_items():
 
     # Sample accessories
     accessories = [
+        {
+            'name': '6.5pH Fertiliser',
+            'price': 15,
+            'quantity': 25,
+            'description': '6.5pH fertiliser for your plants'
+        },
+        {
+            'name': '4.5pH Fertiliser',
+            'price': 15,
+            'quantity': 25,
+            'description': '4.5pH fertiliser for your plants'
+        },
+        {
+            'name': '8.5pH Fertiliser',
+            'price': 15,
+            'quantity': 25,
+            'description': '8.5pH fertiliser for your plants'
+        },
         {
             'name': 'Watering Can',
             'price': 15,
