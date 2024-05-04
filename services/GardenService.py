@@ -14,7 +14,6 @@ class GardenService:
       if not garden_type:
         raise ValueError("garden_type not found")
       return garden_type
-    
     @staticmethod
     def get_garden_buddy_by_id(id):
       garden_buddy = GardenBuddy.query.get(id)
@@ -23,8 +22,8 @@ class GardenService:
       return garden_buddy
     
     @staticmethod
-    def create_garden_type(plant_name, plant_description, ideal_ph_level, ideal_temp_level, ideal_moisture_level, ideal_soil_salinity):
-      garden_type = GardenType(plant_name=plant_name, plant_description=plant_description, ideal_ph_level=ideal_ph_level, ideal_temp_level=ideal_temp_level, ideal_moisture_level=ideal_moisture_level, ideal_soil_salinity=ideal_soil_salinity)
+    def create_garden_type(plant_name, plant_description, ideal_ph_level, ideal_temp_level, ideal_moisture_level, ideal_soil_salinity, ideal_light):
+      garden_type = GardenType(plant_name=plant_name, plant_description=plant_description, ideal_ph_level=ideal_ph_level, ideal_temp_level=ideal_temp_level, ideal_moisture_level=ideal_moisture_level, ideal_soil_salinity=ideal_soil_salinity, ideal_light = ideal_light)
       db.session.add(garden_type)
       db.session.commit()        
       return  garden_type

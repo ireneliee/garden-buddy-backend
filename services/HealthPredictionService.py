@@ -19,17 +19,19 @@ class HealthPredictionService:
         
         image_filename = os.path.basename(image_path)
         output_filename = image_filename.replace(".jpg", "_highlighted.jpg")
-        output_directory = os.path.join("cv_data/highlighted_patterns", output_filename)
+        output_directory = os.path.join("services/highlighted_patterns", output_filename)
         
         cv2.imwrite(output_directory, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
         return output_directory
     
     @staticmethod
     def get_predicted_label(image_path):
-        model = joblib.load('health_prediction_model.joblib')
+        model = joblib.load('services/health_prediction_model.joblib')
         image = cv2.imread(image_path)
         image = cv2.resize(image, (256, 256))
         image = np.expand_dims(image, axis=0) / 255.0
         prediction = model.predict(image)
         predicted_label_index = np.argmax(prediction)
-        return predicted_label_index
+        label_map = {0: 'healthy', 1: 'multiple_diseases', 2: 'rust', 3: 'scab'}
+        predicted_label = label_map.get(predicted_label_index, 'unknown')
+        return predicted_label
