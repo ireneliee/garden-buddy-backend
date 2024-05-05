@@ -1,0 +1,159 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Garden Buddy Backend</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="main-content">
+        <h1>ML Actions</h1>
+
+        <button id="trainLogisticRegression">Train Logistic Regression</button>
+        <button id="adjustIdealsForAll">Adjust Ideals for All Regression</button>
+        <button id="heightPredictionModelTrainSvm">Train Height Prediction Model SVM</button>
+        <button id="adjustIdealsForAllGardenTypeSvm">Adjust Ideals for All Garden Type SVM</button>
+        <button id="healthPredictionModelTrain">Train Health Prediction Model</button>
+        <br/>
+        <br/>
+        <input type="number" id="inputGardenIdForPredictedHeight" placeholder="Garden ID">
+        <button id="getPredictedHeight">Get Predicted Height</button>
+        <br/>
+        <input type="number" id="inputGardenIdForPredictedHeightSvm" placeholder="Garden ID">
+        <button id="getPredictedHeightSvm">Get Predicted Height (SVM)</button>
+        <br/>
+        <input type="number" id="inputGetPredictedLabel" placeholder="RPI Serial ID">
+        <button id="getPredictedLabel">Get Predicted Label</button>
+        <br/>
+        <input type="number" id="inputDetectHarmfulPattern" placeholder="RPI Serial ID">
+        <button id="detectHarmfulPattern">Detect Harmful Patterns</button>
+        <br/>
+        <br/>
+        <div id = "inserted-image">
+            
+
+        </div>
+
+        <script>
+
+            $(document).ready(function () {
+                const idToRoute = {
+                    "trainLogisticRegression": "/garden/height_prediction_model_train_logistic_regression",
+                    "adjustIdealsForAll": "/garden/adjust_ideal_for_all_garden_type_logistic",
+                    "heightPredictionModelTrainSvm": "/garden/height_prediction_model_train_svm",
+                    "adjustIdealsForAllGardenTypeSvm": "/garden/adjust_ideal_for_all_garden_type_svm",
+                    "healthPredictionModelTrain": "/garden/health_prediction_model_train"
+                }
+
+                for (const id in idToRoute) {
+                    $('#' + id).click(function () {
+                        $.ajax({
+                            url: idToRoute[id],
+                            type: "GET",
+                            success: function (response) {
+                                alert("Actions successfully executed! Response: " + JSON.stringify(response))
+                            },
+                            error: function (xhr) {
+                                alert("An error has occurred: " + xhr.responseText)
+                            }
+                        });
+                    });
+                }
+            });
+
+            $('#getPredictedHeight').click(function(){
+                const inputValue = $('#inputGardenIdForPredictedHeight').val();
+                console.log(inputValue)
+                if (inputValue !== '' && !isNaN(inputValue)) {
+                    const numberValue = parseInt(inputValue);
+                    $.ajax({
+                        url: '/garden/get_predicted_height_by_garden_id_logistic?id=' + numberValue,
+                        type: "GET",
+                        success: function(response) {
+                            alert("Predicted height is: " + response[0])
+                        },
+                        error: function(xhr) {
+                            alert("An error has occurred: " + xhr.responseText)
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid number!");
+                }
+            });
+
+            $('#getPredictedHeightSvm').click(function(){
+                const inputValue = $('#inputGardenIdForPredictedHeightSvm').val();
+                console.log('Input value is ' + inputValue)
+                if (inputValue !== '' && !isNaN(inputValue)) {
+                    const numberValue = parseInt(inputValue);
+                    $.ajax({
+                        url: '/garden/get_predicted_height_by_garden_id_svm?id=' + numberValue,
+                        type: "GET",
+                        success: function(response) {
+                            alert("Predicted height is: " + response[0])
+                        },
+                        error: function(xhr) {
+                            alert("An error has occurred: " + xhr.responseText)
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid number!");
+                }
+            });
+
+            $('#detectHarmfulPattern').click(function(){
+                const inputValue = $('#inputDetectHarmfulPattern').val();
+                console.log(inputValue)
+                if (inputValue !== '' && !isNaN(inputValue)) {
+                    const numberValue = parseInt(inputValue);
+                    $.ajax({
+                        url: '/garden/detect_harmful_patterns?serial_id=' + numberValue,
+                        type: "GET",
+                        success: function(response) {
+                            var imagePath = response.output_directory;
+                            document.getElementById("inserted-image").innerHTML = "";
+                            document.getElementById("inserted-image").innerHTML = '<p>Spot of harmful patterns on plants</p><img src="' + imagePath + '" width="50%" height="50%">';
+                        },
+                        error: function(xhr) {
+                            alert("An error has occurred: " + xhr.responseText)
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid number!");
+                }
+            });
+
+            $('#getPredictedLabel').click(function(){
+                const inputValue = $('#inputGetPredictedLabel').val();
+                console.log(inputValue)
+                if (inputValue !== '' && !isNaN(inputValue)) {
+                    const numberValue = parseInt(inputValue);
+                    $.ajax({
+                        url: '/garden/get_predicted_label?serial_id=' + numberValue,
+                        type: "GET",
+                        success: function(response) {
+                            alert("Operation successful. Predicted label is " + response["predicted_label"]);
+                        },
+                        error: function(xhr) {
+                            alert("An error has occurred: " + xhr.responseText)
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid number!");
+                }
+            });
+        </script>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

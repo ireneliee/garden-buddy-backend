@@ -10,22 +10,26 @@
 </head>
 
 <body>
-    <div id="main-menu">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Menu A</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Menu B</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Menu C</a>
-            </li>
-        </ul>
-    </div>
     <div id="main-content">
-        <h1>{{title}}</h1>
-        <div>{{content}}</div>
+        <div style = "text-align: center; padding-top: 10%">
+            <img src = "static/image/plant.png" height = "40%"/>
+            <br/>
+            <br/>
+            <h1>Garden Buddy Homepage</h1>
+            <br/>
+            <p>Hello Admin! What do you want to do today?</p>
+        </div>
+        <br />
+        <div id="main-content-body" style = "text-align: center;">
+            <div id="get-garden-type-section" class="col">
+                <a href="/mlactions" class="btn btn-success">Optimal Plant Conditions</a>
+            </div>
+            <br/>
+            <div id="ml-actions-section" class="col">
+                <a href="/mlactions" class="btn btn-success">ML Actions</a>
+            </div>
+            
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -4,6 +4,7 @@ from ..services.HeightPredictionService import HeightPredictionService
 from ..services.HealthPredictionModel import HealthPredictionModel
 from ..services.HealthPredictionService import HealthPredictionService
 from flask import jsonify, request
+from flask import  render_template
 import numpy as np
 import os
 
@@ -110,4 +111,12 @@ def setup_garden_routes(app):
       image_path = f"services/uploaded_pictures/{serial_id}.jpg"
       predicted_label = HealthPredictionService.get_predicted_label(image_path)
       return jsonify({"predicted_label": predicted_label})
+  
+  @app.route('/gardenType/<id>')
+  def retrieveGardenTypeById(id):
+      garden_type = GardenService.get_garden_type_by_id(id)
+      if garden_type:
+          return render_template('gardenType.html', garden_type = garden_type)
+      else:
+          return render_template('gardenTypeNotFound.html')
     
