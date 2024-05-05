@@ -19,7 +19,7 @@ class HealthPredictionService:
         
         image_filename = os.path.basename(image_path)
         output_filename = image_filename.replace(".jpg", "_highlighted.jpg")
-        output_directory = os.path.join("services/highlighted_patterns", output_filename)
+        output_directory = os.path.join("static/highlighted_patterns", output_filename)
         
         cv2.imwrite(output_directory, cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
         return output_directory
