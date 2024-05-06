@@ -26,8 +26,8 @@ CORS(flask_app)
 db.init_app(flask_app)
 
 # Drop all tables in the database if they exist
-# with flask_app.app_context():
-#     db.drop_all()
+with flask_app.app_context():
+    db.drop_all()
 
 # dataloader method (consider refactoring)
 def create_sample_users():
@@ -66,7 +66,6 @@ def create_garden_buddy():
         {
             'user_id': 1,
             "serial_id": 12345678
-            # "serial_id": current_app.config['PERSONAL_RPI_SERIAL_ID']
         },
         {
             'user_id': 2,
@@ -76,6 +75,10 @@ def create_garden_buddy():
             'user_id': 2,
             "serial_id": '99999999'
         },
+        {
+            'user_id': 1,
+            "serial_id": current_app.config['PERSONAL_RPI_SERIAL_ID']
+        }
     ]
 
     for garden_buddy in garden_buddies:
@@ -95,6 +98,10 @@ def create_garden():
         },
         {
             "garden_buddy_id": 3,
+            "garden_type_id": 1
+        },
+        {
+            "garden_buddy_id": 4,
             "garden_type_id": 1
         }
     ]
