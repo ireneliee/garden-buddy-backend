@@ -20,7 +20,7 @@
     <div id="main-content" class="container" style="margin-left: 3rem;">
         <h1>List of Garden Types</h1>
         <br/>
-        <a href="/mlactions" class="btn btn-success">ML Actions</a>
+        <a href="/" class="btn btn-success">Back to homepage</a>
         <br/>
         <br/>
         <div class="row align-items-stretch">
@@ -35,7 +35,7 @@
                     <ul>
                         <li>pH: {{ garden_type.ideal_ph_level }}</li>
                         <li>Temperature: {{ garden_type.ideal_temp_level }}</li>
-                        <li>Moisture Level: {{ ideal_moisture_level }}</li>
+                        <li>Moisture Level: {{ garden_type.ideal_moisture_level }}</li>
                         <li>Salinity: {{ garden_type.ideal_soil_salinity }}</li>
                     </ul>
                 </div>

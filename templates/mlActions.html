@@ -13,35 +13,49 @@
 <body>
     <div id="main-content" style="margin-left: 3rem;">
         <h1>ML Actions</h1>
-        <br />
-        <a href="/gardenTypes" class="btn btn-success">Garden Types</a>
-        <div id="model-training-trigger-section" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <hr />
+        <a href="/" class="btn btn-success">Back to homepage</a>
+        <div id="model-training-trigger-section" style="padding-top: 1rem; padding-bottom: 2rem;">
             <h4>Model Training Triggers</h4>
-            <button id="trainLogisticRegression" type="button" class="btn btn-outline-success">Train Logistic
-                Regression</button>
-            <button id="adjustIdealsForAll" type="button" class="btn btn-outline-success">Adjust Ideals for All
-                Regression</button>
-            <button id="heightPredictionModelTrainSvm" type="button" class="btn btn-outline-success">Train Height
-                Prediction Model SVM</button>
-            <button id="adjustIdealsForAllGardenTypeSvm" type="button" class="btn btn-outline-success">Adjust Ideals for
-                All Garden Type SVM</button>
-            <button id="healthPredictionModelTrain" type="button" class="btn btn-outline-success">Train Health
-                Prediction Model</button>
+            <br/>
+            <h5>Logistic Regression</h5>
+            <div>
+                <button id="trainLogisticRegression" type="button" class="btn btn-outline-success">Train Logistic
+                    Regression</button>
+                <button id="adjustIdealsForAll" type="button" class="btn btn-outline-success">Adjust Ideals for All
+                    Regression</button>
+            </div>
+            <br/>
+            <h5>SVM</h5>
+            <div>
+                <button id="heightPredictionModelTrainSvm" type="button" class="btn btn-outline-success">Train Height
+                    Prediction Model SVM</button>
+                <button id="adjustIdealsForAllGardenTypeSvm" type="button" class="btn btn-outline-success">Adjust Ideals for
+                    All Garden Type SVM</button>
+            </div>
+            <br/>
+            <h5>Health Prediction Model</h5>
+            <div>
+                <button id="healthPredictionModelTrain" type="button" class="btn btn-outline-success">Train Health
+                    Prediction Model</button>
+            </div>
+            <br/>
         </div>
         <div id="get-result-section">
             <h4>Get Predictions</h4>
+            <hr/>
             <input type="number" id="inputGardenIdForPredictedHeight" placeholder="Garden ID">
             <button id="getPredictedHeight" type="button" class="btn btn-success">Get Predicted Height</button>
-            <br /><br/>
+            <br /><br />
             <input type="number" id="inputGardenIdForPredictedHeightSvm" placeholder="Garden ID">
             <button id="getPredictedHeightSvm" type="button" class="btn btn-success">Get Predicted Height (SVM)</button>
-            <br /><br/>
-            <input type="number" id="inputGetPredictedLabel" placeholder="RPI Serial ID">
+            <br /><br />
+            <input type="text" id="inputGetPredictedLabel" placeholder="RPI Serial ID">
             <button id="getPredictedLabel" type="button" class="btn btn-success">Get Predicted Label</button>
-            <br /><br/>
-            <input type="number" id="inputDetectHarmfulPattern" placeholder="RPI Serial ID">
+            <br /><br />
+            <input type="text" id="inputDetectHarmfulPattern" placeholder="RPI Serial ID">
             <button id="detectHarmfulPattern" type="button" class="btn btn-success">Detect Harmful Patterns</button>
-            <br /><br/>
+            <br /><br />
             <div id="inserted-image">
 
 
@@ -119,10 +133,9 @@
             $('#detectHarmfulPattern').click(function () {
                 const inputValue = $('#inputDetectHarmfulPattern').val();
                 console.log(inputValue)
-                if (inputValue !== '' && !isNaN(inputValue)) {
-                    const numberValue = parseInt(inputValue);
+                if (inputValue !== '') {
                     $.ajax({
-                        url: '/garden/detect_harmful_patterns?serial_id=' + numberValue,
+                        url: '/garden/detect_harmful_patterns?serial_id=' + inputValue,
                         type: "GET",
                         success: function (response) {
                             var imagePath = response.output_directory;
@@ -141,10 +154,9 @@
             $('#getPredictedLabel').click(function () {
                 const inputValue = $('#inputGetPredictedLabel').val();
                 console.log(inputValue)
-                if (inputValue !== '' && !isNaN(inputValue)) {
-                    const numberValue = parseInt(inputValue);
+                if (inputValue !== '') {
                     $.ajax({
-                        url: '/garden/get_predicted_label?serial_id=' + numberValue,
+                        url: '/garden/get_predicted_label?serial_id=' + inputValue,
                         type: "GET",
                         success: function (response) {
                             alert("Operation successful. Predicted label is " + response["predicted_label"]);

@@ -4,6 +4,7 @@ import bcrypt
 from sqlalchemy.exc import IntegrityError
 from flask import current_app
 from .UserService import UserService
+from .DataService import DataService
 
 
 class GardenService:
@@ -41,15 +42,33 @@ class GardenService:
             raise ValueError("User not found")
         
     @staticmethod
+    def create_garden_with_default_height(garden_buddy_id, garden_type_id):
+        garden_type = GardenService.get_garden_type_by_id(garden_type_id)
+        garden_buddy = GardenService.get_garden_buddy_by_id(garden_buddy_id)
+
+        garden = Garden(garden_type_id=garden_type_id, garden_type=garden_type )
+        
+        
+        db.session.add(garden)
+        db.session.commit()
+        hData = DataService.createHeightData(garden_buddy_id, 0)
+        garden.height_data = hData 
+        garden_buddy.garden = garden
+        db.session.commit()
+        return garden
+    
+    @staticmethod
     def create_garden(garden_buddy_id, garden_type_id):
         garden_type = GardenService.get_garden_type_by_id(garden_type_id)
         garden_buddy = GardenService.get_garden_buddy_by_id(garden_buddy_id)
 
         garden = Garden(garden_type_id=garden_type_id, garden_type=garden_type )
-        garden_buddy.garden = garden
+        
+        
         db.session.add(garden)
-        db.session.commit()       
-
+        db.session.commit()
+        garden_buddy.garden = garden
+        db.session.commit()
         return garden
     
     @staticmethod
