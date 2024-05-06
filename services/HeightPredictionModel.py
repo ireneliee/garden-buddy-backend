@@ -15,9 +15,8 @@ class HeightPredictionModel:
         X = []
         y = []
         for garden in gardens:
-            if garden.height_data.height is not None:
-                X.append([garden.ph_data.ph, garden.temperature_data.air_temperature, garden.salinity_data.salinity, garden.moisture_data.moisture])
-                y.append(garden.height_data.height)
+            X.append([garden.ph_data.ph, garden.temperature_data.air_temperature, garden.salinity_data.salinity, garden.moisture_data.moisture])
+            y.append(garden.height_data.height)
             
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         

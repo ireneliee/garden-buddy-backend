@@ -188,6 +188,22 @@ class DataService:
         except Exception as ex:
             print("An error occurred while storing ph data:", ex)
             return None
+    
+    @staticmethod
+    def createHeightData(garden_id, height):
+        try:
+            date_timestamp = datetime.now().replace(microsecond=0)
+            gardenData = HeightData(
+                    garden_id=garden_id,
+                    height=height,
+                    date_timestamp=date_timestamp,
+                )
+            db.session.add(gardenData)
+            db.session.commit()
+            return gardenData
+        except Exception as ex:
+            print("An error occurred while storing ph data:", ex)
+            return None
 
     @staticmethod
     def retrieveLatestData(gardenId):

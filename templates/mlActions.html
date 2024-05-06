@@ -50,10 +50,10 @@
             <input type="number" id="inputGardenIdForPredictedHeightSvm" placeholder="Garden ID">
             <button id="getPredictedHeightSvm" type="button" class="btn btn-success">Get Predicted Height (SVM)</button>
             <br /><br />
-            <input type="number" id="inputGetPredictedLabel" placeholder="RPI Serial ID">
+            <input type="text" id="inputGetPredictedLabel" placeholder="RPI Serial ID">
             <button id="getPredictedLabel" type="button" class="btn btn-success">Get Predicted Label</button>
             <br /><br />
-            <input type="number" id="inputDetectHarmfulPattern" placeholder="RPI Serial ID">
+            <input type="text" id="inputDetectHarmfulPattern" placeholder="RPI Serial ID">
             <button id="detectHarmfulPattern" type="button" class="btn btn-success">Detect Harmful Patterns</button>
             <br /><br />
             <div id="inserted-image">
@@ -133,10 +133,9 @@
             $('#detectHarmfulPattern').click(function () {
                 const inputValue = $('#inputDetectHarmfulPattern').val();
                 console.log(inputValue)
-                if (inputValue !== '' && !isNaN(inputValue)) {
-                    const numberValue = parseInt(inputValue);
+                if (inputValue !== '') {
                     $.ajax({
-                        url: '/garden/detect_harmful_patterns?serial_id=' + numberValue,
+                        url: '/garden/detect_harmful_patterns?serial_id=' + inputValue,
                         type: "GET",
                         success: function (response) {
                             var imagePath = response.output_directory;
@@ -155,10 +154,9 @@
             $('#getPredictedLabel').click(function () {
                 const inputValue = $('#inputGetPredictedLabel').val();
                 console.log(inputValue)
-                if (inputValue !== '' && !isNaN(inputValue)) {
-                    const numberValue = parseInt(inputValue);
+                if (inputValue !== '') {
                     $.ajax({
-                        url: '/garden/get_predicted_label?serial_id=' + numberValue,
+                        url: '/garden/get_predicted_label?serial_id=' + inputValue,
                         type: "GET",
                         success: function (response) {
                             alert("Operation successful. Predicted label is " + response["predicted_label"]);

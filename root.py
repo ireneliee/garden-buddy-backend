@@ -26,8 +26,8 @@ CORS(flask_app)
 db.init_app(flask_app)
 
 # Drop all tables in the database if they exist
-with flask_app.app_context():
-    db.drop_all()
+# with flask_app.app_context():
+#     db.drop_all()
 
 # dataloader method (consider refactoring)
 def create_sample_users():
@@ -99,7 +99,7 @@ def create_garden():
     ]
 
     for garden in gardens:
-        garden = GardenService.create_garden(**garden)
+        garden = GardenService.create_garden_with_default_height(**garden)
         print(f"Created Garden: {garden}")
     
     DataService.storePhData(12345678,7)
