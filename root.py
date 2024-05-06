@@ -133,7 +133,7 @@ def create_sample_items():
             'plant_name': 'Lavender',
             'garden_buddy_pack_description': 'Includes seeds, pots, soil, and fertilizer for lavender plants',
             'environment_enum': 'DESERT',  # Adjust environment_enum as needed
-            'garden_type_id': 3  # Adjust garden_type_id as needed
+            'garden_type_id': 2  # Adjust garden_type_id as needed
         },
         {
             'name': 'Cactus Collection',
@@ -143,8 +143,28 @@ def create_sample_items():
             'plant_name': 'Cactus',
             'garden_buddy_pack_description': 'Includes a variety of small cactus plants and decorative pots',
             'environment_enum': 'TROPICAL_FARM',  # Adjust environment_enum as needed
-            'garden_type_id': 4  # Adjust garden_type_id as needed
-        }
+            'garden_type_id': 6  # Adjust garden_type_id as needed
+        },
+        {
+            'name': 'Rose Set',
+            'price': 30,
+            'quantity': 10,
+            'description': 'Red rose plants to brighten your home',
+            'plant_name': 'Rose',
+            'garden_buddy_pack_description': 'Includes seeds, pots, soil, and fertilizer for rose plants',
+            'environment_enum': 'TROPICAL_FARM',  # Adjust environment_enum as needed
+            'garden_type_id': 1  # Adjust garden_type_id as needed
+        },
+        {
+            'name': 'Tomato Set',
+            'price': 10,
+            'quantity': 100,
+            'description': 'Grow your own delicious tomatoes',
+            'plant_name': 'Tomato',
+            'garden_buddy_pack_description': 'Includes seeds, pots, soil, and fertilizer for tomato plants',
+            'environment_enum': 'TROPICAL_FARM',  # Adjust environment_enum as needed
+            'garden_type_id': 3  # Adjust garden_type_id as needed
+        },
     ]
 
     # Sample accessories
