@@ -108,7 +108,7 @@ class Garden(db.Model):
     
 class GardenImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    garden_image_link = db.Column(db.String(20), nullable=False)
+    garden_image_link = db.Column(db.String(200), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False) 
 
     # One-to-many relationship with GardenBuddy

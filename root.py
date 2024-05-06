@@ -26,8 +26,8 @@ CORS(flask_app)
 db.init_app(flask_app)
 
 # Drop all tables in the database if they exist
-# with flask_app.app_context():
-#     db.drop_all()
+with flask_app.app_context():
+    db.drop_all()
 
 # dataloader method (consider refactoring)
 def create_sample_users():

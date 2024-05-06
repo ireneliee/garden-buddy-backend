@@ -333,14 +333,12 @@ class DataService:
                 file_path = os.path.join("services/uploaded_pictures/", file_name)
                 file.save(file_path)
 
-                image_link = url_for(
-                    "static", filename=f"uploaded_pictures/{file_name}", _external=True
-                )
-
+                image_link = "services/uploaded_pictures/" + file_name
+                print('Image link is ', str(image_link))
                 garden_data = GardenImage(
                     garden_id=garden_buddy.garden.id,
-                    image_link=image_link,
-                    date_timestamp=date_timestamp,
+                    garden_image_link=image_link,
+                    timestamp=date_timestamp,
                 )
                 db.session.add(garden_data)
                 db.session.commit()
