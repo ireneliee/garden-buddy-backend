@@ -27,7 +27,7 @@ class DataService:
             garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
             if garden_buddy:
                 gardenData = TemperatureData(
-                    garden_id=garden_buddy.id,
+                    garden_id=garden_buddy.garden.id,
                     air_temperature=air_temperature,
                     date_timestamp=date_timestamp,
                 )
@@ -64,7 +64,7 @@ class DataService:
             garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
             if garden_buddy:
                 gardenData = MoistureData(
-                    garden_id=garden_buddy.garden_id,
+                    garden_id=garden_buddy.garden.id,
                     moisture=moisture,
                     date_timestamp=date_timestamp,
                 )
@@ -88,7 +88,7 @@ class DataService:
             if garden_buddy:
 
                 gardenData = SalinityData(
-                    garden_id=garden_buddy.garden_id,
+                    garden_id=garden_buddy.garden.id,
                     salinity=salinity,
                     date_timestamp=date_timestamp,
                 )
@@ -112,7 +112,7 @@ class DataService:
             garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
             if garden_buddy:
                 gardenData = PhData(
-                    garden_id=garden_buddy.garden_id,
+                    garden_id=garden_buddy.garden.id,
                     ph=ph,
                     date_timestamp=date_timestamp,
                 )
@@ -136,7 +136,7 @@ class DataService:
             garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
             if garden_buddy:
                 gardenData = BrightnessData(
-                    garden_id=garden_buddy.garden_id,
+                    garden_id=garden_buddy.garden.id,
                     brightness=brightness,
                     date_timestamp=date_timestamp,
                 )
@@ -172,7 +172,7 @@ class DataService:
             garden_buddy = GardenBuddy.query.filter_by(serial_id=serial_id).first()
             if garden_buddy:
                 gardenData = HeightData(
-                    garden_id=garden_buddy.garden_id,
+                    garden_id=garden_buddy.garden.id,
                     height=height,
                     date_timestamp=date_timestamp,
                 )
