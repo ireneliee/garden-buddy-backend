@@ -99,7 +99,7 @@ def create_garden():
     ]
 
     for garden in gardens:
-        garden = GardenService.create_garden_with_default_height(**garden)
+        garden = GardenService.create_garden(**garden)
         print(f"Created Garden: {garden}")
     
     DataService.storePhData(12345678,7)
