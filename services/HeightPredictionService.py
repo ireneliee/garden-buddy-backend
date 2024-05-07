@@ -87,7 +87,7 @@ class HeightPredictionService:
         feature_ranges = {
             'ideal_ph_level': (0, 14),
             'ideal_temp_level': (0, 100),
-            'ideal_moisture_level': (0, 100),
+            'ideal_moisture_level': (0, 900),
             'ideal_soil_salinity': (0, 100)
         }
 
