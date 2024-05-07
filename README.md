@@ -8,7 +8,7 @@ This repository hosts the code for the API server, which manages requests from b
 
 ## Setup Instructions
 
-1. You will need this repository, [garden-mobile-rasp-hub](https://github.com/ireneliee/garden-mobile-rasp-hub), and [garden-buddy-mobile](https://github.com/ireneliee/garden-buddy-mobile) installed locally into your computer
+1. Clone this repository to your local computer
 2. Create a MySQL database named `garden_buddy_database`
 3. Create a new virtual environment for this repository and install all the required packages using 
 ```
